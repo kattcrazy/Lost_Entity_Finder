@@ -2,7 +2,7 @@
 
 Detect stale references after entity ID changes in Home Assistant. When you change an entity ID (for example `sensor.door` -> `sensor.window`), Lost Entity Find And Replace finds automations, scripts, scenes, dashboards, groups, and helpers that still use the old ID and raises one repair per changed entity ID with direct links to each location, along with options to ignore or auto-replace in bulk.
 
-*Lost Entity Find And Replace only handles entity ID changes. It does not handle deleted entities, unavailable entities, or general missing-entity audits.*
+*Lost Entity Find And Replace only handles entity ID changes. It does not handle deleted entities, unavailable entities, or general missing-entity audits. YAML only helpers such as ones in configuration.yaml will not be checked for entity ID changes.*
 
 ## Installation
 
@@ -26,7 +26,7 @@ Detect stale references after entity ID changes in Home Assistant. When you chan
 
 On setup you can enable Auto-Replace (bulk fix). Default is off. Change this anytime via Settings → Devices & services → Lost Entity Find And Replace → Configure.
 
-Some types of helpers, YAML-only config, and third-party `.storage` files such as HACS intergrations may require manual updating. These are flagged in the repair and cannot be auto-replaced.
+Some types of helpers, YAML-only config, and third-party `.storage` files such as HACS intergrations will require manual updating. These are flagged in the repair and cannot be auto-replaced.
 
 ### Entities
 
