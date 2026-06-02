@@ -1,4 +1,4 @@
-"""Config flow for Entity Finder."""
+"""Config flow for Lost Entity Find And Replace."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from .const import CONF_ENABLE_BULK_FIX, DEFAULT_ENABLE_BULK_FIX, DOMAIN
 
 
 class EntityFinderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Entity Finder."""
+    """Handle a config flow for Lost Entity Find And Replace."""
 
     VERSION = 1
 
@@ -27,7 +27,7 @@ class EntityFinderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             return self.async_create_entry(
-                title="Entity Finder",
+                title="Lost Entity Find And Replace",
                 data={
                     CONF_ENABLE_BULK_FIX: user_input.get(
                         CONF_ENABLE_BULK_FIX, DEFAULT_ENABLE_BULK_FIX
@@ -56,12 +56,12 @@ class EntityFinderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class EntityFinderOptionsFlow(config_entries.OptionsFlow):
-    """Handle Entity Finder options."""
+    """Handle Lost Entity Find And Replace options."""
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Manage Entity Finder options."""
+        """Manage Lost Entity Find And Replace options."""
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
 

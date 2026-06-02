@@ -1,4 +1,4 @@
-"""Button platform for Entity Finder."""
+"""Button platform for Lost Entity Find And Replace."""
 
 from __future__ import annotations
 
@@ -26,14 +26,14 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up Entity Finder button entities."""
+    """Set up Lost Entity Find And Replace button entities."""
     manager: EntityFinderManager = entry.runtime_data
     platform: EntityFinderEntityPlatform = manager.entity_platform
     platform.async_setup_buttons(async_add_entities)
 
 
 class EntityFinderButton(ButtonEntity):
-    """Base class for Entity Finder buttons."""
+    """Base class for Lost Entity Find And Replace buttons."""
 
     _attr_has_entity_name = True
     _attr_entity_category = EntityCategory.CONFIG

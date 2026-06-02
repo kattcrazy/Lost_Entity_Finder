@@ -1,4 +1,4 @@
-"""Unit tests for Entity Finder manager helpers."""
+"""Unit tests for Lost Entity Find And Replace manager helpers."""
 
 from __future__ import annotations
 
@@ -11,16 +11,16 @@ from unittest.mock import MagicMock
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bootstrap  # noqa: F401
 
-mock_config_flow = types.ModuleType("entity_finder.config_flow")
+mock_config_flow = types.ModuleType("lost_entity_find_and_replace.config_flow")
 mock_config_flow.get_enable_bulk_fix = lambda _hass, _entry: False
-sys.modules["entity_finder.config_flow"] = mock_config_flow
+sys.modules["lost_entity_find_and_replace.config_flow"] = mock_config_flow
 
-mock_scanner = types.ModuleType("entity_finder.scanner")
+mock_scanner = types.ModuleType("lost_entity_find_and_replace.scanner")
 mock_scanner.async_scan_tracked_references = MagicMock(return_value={})
-sys.modules["entity_finder.scanner"] = mock_scanner
+sys.modules["lost_entity_find_and_replace.scanner"] = mock_scanner
 
-from entity_finder.manager import EntityFinderManager  # noqa: E402
-from entity_finder.models import PendingEntityIdChange, ReferenceHit  # noqa: E402
+from lost_entity_find_and_replace.manager import EntityFinderManager  # noqa: E402
+from lost_entity_find_and_replace.models import PendingEntityIdChange, ReferenceHit  # noqa: E402
 
 
 class EntityFinderManagerTests(unittest.TestCase):

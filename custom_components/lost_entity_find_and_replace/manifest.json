@@ -1,14 +1,14 @@
 {
-  "domain": "entity_finder",
-  "name": "Entity Finder",
+  "domain": "lost_entity_find_and_replace",
+  "name": "Lost Entity Find And Replace",
   "after_dependencies": ["automation", "group", "lovelace", "script"],
   "codeowners": ["@kattcrazy"],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/kattcrazy/Entity-Finder",
+  "documentation": "https://github.com/kattcrazy/Lost-Entity-Find-And-Replace",
   "integration_type": "service",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/kattcrazy/Entity-Finder/issues",
+  "issue_tracker": "https://github.com/kattcrazy/Lost-Entity-Find-And-Replace/issues",
   "requirements": [],
   "version": "1.0.0"
 }

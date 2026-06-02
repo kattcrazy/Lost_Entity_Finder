@@ -1,4 +1,4 @@
-"""Utility helpers for Entity Finder."""
+"""Utility helpers for Lost Entity Find And Replace."""
 
 from __future__ import annotations
 

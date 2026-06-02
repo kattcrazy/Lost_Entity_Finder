@@ -1,4 +1,4 @@
-"""Unit tests for Entity Finder helpers."""
+"""Unit tests for Lost Entity Find And Replace helpers."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from unittest.mock import MagicMock
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bootstrap  # noqa: F401
 
-from entity_finder.models import ReferenceHit
-from entity_finder.util import (
+from lost_entity_find_and_replace.models import ReferenceHit
+from lost_entity_find_and_replace.util import (
     deep_replace_entity_ids,
     format_references_for_repair,
     merge_reference_hits,

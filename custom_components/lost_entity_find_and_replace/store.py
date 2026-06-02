@@ -1,4 +1,4 @@
-"""Persistent storage for Entity Finder."""
+"""Persistent storage for Lost Entity Find And Replace."""
 
 from __future__ import annotations
 

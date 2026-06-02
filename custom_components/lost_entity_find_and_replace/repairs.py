@@ -1,4 +1,4 @@
-"""Repairs flow for Entity Finder."""
+"""Repairs flow for Lost Entity Find And Replace."""
 
 from __future__ import annotations
 

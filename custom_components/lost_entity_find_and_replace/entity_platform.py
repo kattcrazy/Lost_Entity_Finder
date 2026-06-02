@@ -1,4 +1,4 @@
-"""Entity platform coordinator for Entity Finder entities."""
+"""Entity platform coordinator for Lost Entity Find And Replace entities."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class EntityFinderEntityPlatform:
-    """Coordinate Entity Finder standalone entities."""
+    """Coordinate Lost Entity Find And Replace standalone entities."""
 
     def __init__(
         self,
@@ -37,7 +37,7 @@ class EntityFinderEntityPlatform:
         async_add_entities([LostEntitiesSensor(self.manager, self.entry)])
 
     def async_setup_buttons(self, async_add_entities) -> None:
-        """Set up Entity Finder buttons."""
+        """Set up Lost Entity Find And Replace buttons."""
         from .button import IgnoreAllButton, RestoreIgnoredButton
 
         self._async_add_button_entities = async_add_entities

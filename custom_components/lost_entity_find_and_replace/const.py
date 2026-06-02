@@ -1,6 +1,6 @@
-"""Constants for Entity Finder."""
+"""Constants for Lost Entity Find And Replace."""
 
-DOMAIN = "entity_finder"
+DOMAIN = "lost_entity_find_and_replace"
 
 CONF_ENABLE_BULK_FIX = "enable_bulk_fix"
 DEFAULT_ENABLE_BULK_FIX = False

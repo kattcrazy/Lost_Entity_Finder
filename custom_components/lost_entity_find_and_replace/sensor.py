@@ -1,4 +1,4 @@
-"""Sensor platform for Entity Finder."""
+"""Sensor platform for Lost Entity Find And Replace."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up Entity Finder sensor entities."""
+    """Set up Lost Entity Find And Replace sensor entities."""
     manager: EntityFinderManager = entry.runtime_data
     platform: EntityFinderEntityPlatform = manager.entity_platform
     platform.async_setup_sensor(async_add_entities)

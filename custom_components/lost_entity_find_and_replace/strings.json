@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Entity Finder",
+        "title": "Lost Entity Find And Replace",
         "description": "Detect stale references after entity ID changes and raise repairs with direct links to each location.",
         "data": {
           "enable_bulk_fix": "Enable Auto-Replace (bulk fix)"
@@ -10,13 +10,13 @@
       }
     },
     "abort": {
-      "single_instance_allowed": "Entity Finder is already configured."
+      "single_instance_allowed": "Lost Entity Find And Replace is already configured."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Entity Finder options",
+        "title": "Lost Entity Find And Replace options",
         "data": {
           "enable_bulk_fix": "Enable Auto-Replace (bulk fix)"
         }
@@ -34,7 +34,7 @@
           },
           "auto_replace_disabled": {
             "title": "Auto-Replace disabled",
-            "description": "Auto-Replace is disabled in Entity Finder integration settings. Enable bulk fix under **Settings → Devices & services → Entity Finder → Configure**, or use the edit links above to update references manually."
+            "description": "Auto-Replace is disabled in Lost Entity Find And Replace integration settings. Enable bulk fix under **Settings → Devices & services → Lost Entity Find And Replace → Configure**, or use the edit links above to update references manually."
           },
           "preview": {
             "title": "Preview Auto-Replace",

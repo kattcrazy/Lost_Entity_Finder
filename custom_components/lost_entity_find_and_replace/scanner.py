@@ -1,4 +1,4 @@
-"""Orchestrate reference scanners for Entity Finder."""
+"""Orchestrate reference scanners for Lost Entity Find And Replace."""
 
 from __future__ import annotations
 

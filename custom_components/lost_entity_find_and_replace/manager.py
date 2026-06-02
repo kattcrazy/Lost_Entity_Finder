@@ -1,4 +1,4 @@
-"""Entity Finder manager - entity ID change tracking, scanning, and repairs."""
+"""Lost Entity Find And Replace manager - entity ID change tracking, scanning, and repairs."""
 
 from __future__ import annotations
 

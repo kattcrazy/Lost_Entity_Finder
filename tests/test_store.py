@@ -1,4 +1,4 @@
-"""Unit tests for Entity Finder storage."""
+"""Unit tests for Lost Entity Find And Replace storage."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bootstrap  # noqa: F401
 
-from entity_finder.const import MAX_PENDING_CHANGES
-from entity_finder.store import EntityFinderStore
+from lost_entity_find_and_replace.const import MAX_PENDING_CHANGES
+from lost_entity_find_and_replace.store import EntityFinderStore
 
 
 class EntityFinderStoreTests(unittest.IsolatedAsyncioTestCase):
@@ -125,7 +125,7 @@ class EntityFinderStoreTests(unittest.IsolatedAsyncioTestCase):
         registry.async_get.return_value = MagicMock(unique_id="uid-1")
 
         with patch(
-            "entity_finder.store.er.async_get",
+            "lost_entity_find_and_replace.store.er.async_get",
             return_value=registry,
         ):
             await self.store.async_apply_registry_event(

@@ -1,34 +1,34 @@
-# Entity Finder
+# Lost Entity Find And Replace
 
-Detect stale references after entity ID changes in Home Assistant. When you change an entity ID (for example `sensor.door` -> `sensor.window`), Entity Finder finds automations, scripts, scenes, dashboards, groups, and helpers that still use the old ID and raises one repair per changed entity ID with direct links to each location, along with options to ignore or auto-replace in bulk.
+Detect stale references after entity ID changes in Home Assistant. When you change an entity ID (for example `sensor.door` -> `sensor.window`), Lost Entity Find And Replace finds automations, scripts, scenes, dashboards, groups, and helpers that still use the old ID and raises one repair per changed entity ID with direct links to each location, along with options to ignore or auto-replace in bulk.
 
-*Entity Finder only handles entity ID changes. It does not handle deleted entities, unavailable entities, or general missing-entity audits.*
+*Lost Entity Find And Replace only handles entity ID changes. It does not handle deleted entities, unavailable entities, or general missing-entity audits.*
 
 ## Installation
 
 ### HACS (recommended)
 
 
-1. Add `https://github.com/kattcrazy/Entity-Finder` as a custom repository in HACS (category: Integration)
-2. Search for Entity Finder & click Download
+1. Add `https://github.com/kattcrazy/Lost-Entity-Find-And-Replace` as a custom repository in HACS (category: Integration)
+2. Search for Lost Entity Find And Replace & click Download
 3. Restart Home Assistant
 4. Add the integration under Settings → Devices & services
 
 ### Manual
 
-1. Copy the `custom_components/entity_finder` folder into your Home Assistant `custom_components` directory
+1. Copy the `custom_components/lost_entity_find_and_replace` folder into your Home Assistant `custom_components` directory
 2. Restart Home Assistant
 3. Add the integration under Settings → Devices & services
 
 ## Auto-Replace
 
-On setup you can enable Auto-Replace (bulk fix). Default is off. Change this anytime via Settings → Devices & services → Entity Finder → Configure.
+On setup you can enable Auto-Replace (bulk fix). Default is off. Change this anytime via Settings → Devices & services → Lost Entity Find And Replace → Configure.
 
 Some types of helpers, YAML-only config, and third-party `.storage` files such as HACS intergrations may require manual updating. These are flagged in the repair and cannot be auto-replaced.
 
 ## Entities
 
-Entity Finder adds the following entities:
+Lost Entity Find And Replace adds the following entities:
 
 | Entity | Type | Description |
 |--------|------|-------------|

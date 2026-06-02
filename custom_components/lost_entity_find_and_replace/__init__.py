@@ -1,4 +1,4 @@
-"""Entity Finder integration."""
+"""Lost Entity Find And Replace integration."""
 
 from __future__ import annotations
 
@@ -19,13 +19,13 @@ CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
-    """Set up Entity Finder."""
+    """Set up Lost Entity Find And Replace."""
     hass.data.setdefault(DOMAIN, {})
     return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Entity Finder from a config entry."""
+    """Set up Lost Entity Find And Replace from a config entry."""
     manager = EntityFinderManager(hass, entry)
     await manager.async_setup()
     manager.entity_platform = EntityFinderEntityPlatform(hass, entry, manager)
@@ -44,7 +44,7 @@ async def _async_update_options(hass: HomeAssistant, entry: ConfigEntry) -> None
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload Entity Finder."""
+    """Unload Lost Entity Find And Replace."""
     unload_ok = await hass.config_entries.async_unload_platforms(
         entry, ["sensor", "button"]
     )

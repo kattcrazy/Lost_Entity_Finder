@@ -1,4 +1,4 @@
-"""Data models for Entity Finder."""
+"""Data models for Lost Entity Find And Replace."""
 
 from __future__ import annotations
 
