@@ -9,7 +9,7 @@ from typing import Any, Callable, TypeVar
 from unittest.mock import MagicMock
 
 ROOT = Path(__file__).resolve().parents[1] / "custom_components"
-PKG = ROOT / "lost_entity_find_and_replace"
+PKG = ROOT / "lost_entity_finder"
 
 _F = TypeVar("_F", bound=Callable[..., Any])
 
@@ -93,6 +93,6 @@ sys.modules.setdefault("homeassistant.helpers.entity", MagicMock())
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-package = types.ModuleType("lost_entity_find_and_replace")
+package = types.ModuleType("lost_entity_finder")
 package.__path__ = [str(PKG)]
-sys.modules["lost_entity_find_and_replace"] = package
+sys.modules["lost_entity_finder"] = package

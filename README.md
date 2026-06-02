@@ -1,22 +1,22 @@
-# Lost Entity Find & Replace
+# Lost Entity Finder
 
-Detect stale references after entity ID changes in Home Assistant. When you change an entity ID (for example `sensor.door` -> `sensor.window`), Lost Entity Find & Replace finds automations, scripts, scenes, dashboards, groups, and helpers that still use the old ID and raises one repair per changed entity ID with direct links to each location, along with options to ignore or auto-replace in bulk.
+Detect stale references after entity ID changes in Home Assistant. When you change an entity ID (for example `sensor.door` -> `sensor.window`), Lost Entity Finder finds automations, scripts, scenes, dashboards, groups, and helpers that still use the old ID and raises one repair per changed entity ID with direct links to each location, along with options to ignore or auto-replace in bulk.
 
-*Lost Entity Find & Replace only handles entity ID changes. It does not handle deleted entities, unavailable entities, or general missing-entity audits. YAML only helpers such as ones in configuration.yaml will not be checked for entity ID changes.*
+*Lost Entity Finder only handles entity ID changes. It does not handle deleted entities, unavailable entities, or general missing-entity audits. YAML only helpers such as ones in configuration.yaml will not be checked for entity ID changes.*
 
 ## Installation
 
 ### HACS (recommended)
 
 
-1. Add `https://github.com/kattcrazy/Lost-Entity-Find-And-Replace` as a custom repository in HACS (category: Integration)
-2. Search for Lost Entity Find & Replace & click Download
+1. Add `https://github.com/kattcrazy/Lost_Entity_Finder` as a custom repository in HACS (category: Integration)
+2. Search for Lost Entity Finder & click Download
 3. Restart Home Assistant
 4. Add the integration under Settings → Devices & services
 
 ### Manual
 
-1. Copy the `custom_components/lost_entity_find_and_replace` folder into your Home Assistant `custom_components` directory
+1. Copy the `custom_components/lost_entity_finder` folder into your Home Assistant `custom_components` directory
 2. Restart Home Assistant
 3. Add the integration under Settings → Devices & services
 
@@ -24,13 +24,13 @@ Detect stale references after entity ID changes in Home Assistant. When you chan
 
 ### Auto-Replace
 
-On setup you can enable Auto-Replace (bulk fix). Default is off. Change this anytime via Settings → Devices & services → Lost Entity Find & Replace → Configure.
+On setup you can enable Auto-Replace (bulk fix). Default is off. Change this anytime via Settings → Devices & services → Lost Entity Finder → Configure.
 
 Some types of helpers, YAML-only config, and third-party `.storage` files such as HACS intergrations will require manual updating. These are flagged in the repair and cannot be auto-replaced.
 
 ### Entities
 
-Lost Entity Find & Replace adds the following entities:
+Lost Entity Finder adds the following entities:
 
 | Entity | Type | Description |
 |--------|------|-------------|
@@ -46,20 +46,20 @@ After an entity ID change, open Settings → System → Repairs. Each lost entit
 
 ### Services
 
-Use  `lost_entity_find_and_replace.find_entity_references` to scan for a specific entity ID on demand. Will create a persistent notification with links to all instances of the entity id.
+Use `lost_entity_finder.find_entity_references` to scan for a specific entity ID on demand. Will create a persistent notification with links to all instances of the entity id.
 
 Example
 
 ```yaml
-service: lost_entity_find_and_replace.find_entity_references
+service: lost_entity_finder.find_entity_references
 data:
   entity_id: light.name
 ```
 
-Use `lost_entity_find_and_replace.create_manual_repair` to create a repair from a supplied old/new entity ID pair. You can then choose to auto-replace all instances from the repair.
+Use `lost_entity_finder.create_manual_repair` to create a repair from a supplied old/new entity ID pair. You can then choose to auto-replace all instances from the repair.
 
 ```yaml
-service: lost_entity_find_and_replace.create_manual_repair
+service: lost_entity_finder.create_manual_repair
 data:
   old_entity_id: light.old_name
   new_entity_id: light.new_name

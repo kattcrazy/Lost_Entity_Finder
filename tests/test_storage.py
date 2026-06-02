@@ -11,9 +11,9 @@ from unittest.mock import MagicMock
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bootstrap  # noqa: F401
 
-from lost_entity_find_and_replace.scanners import storage  # noqa: E402
-from lost_entity_find_and_replace.util import manual_reference_reason  # noqa: E402
-from lost_entity_find_and_replace.models import ReferenceHit  # noqa: E402
+from lost_entity_finder.scanners import storage  # noqa: E402
+from lost_entity_finder.util import manual_reference_reason  # noqa: E402
+from lost_entity_finder.models import ReferenceHit  # noqa: E402
 
 
 class StorageScannerHelperTests(unittest.TestCase):

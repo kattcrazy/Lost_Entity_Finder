@@ -1,6 +1,6 @@
-"""Constants for Lost Entity Find And Replace."""
+"""Constants for Lost Entity Finder."""
 
-DOMAIN = "lost_entity_find_and_replace"
+DOMAIN = "lost_entity_finder"
 
 CONF_ENABLE_BULK_FIX = "enable_bulk_fix"
 DEFAULT_ENABLE_BULK_FIX = False
@@ -33,6 +33,8 @@ STORAGE_SKIP_EXACT: frozenset[str] = frozenset(
         # Legacy storage keys from pre-rename domain
         "entity_finder.pending_id_changes",
         "entity_finder.ignored",
+        "lost_entity_find_and_replace.pending_id_changes",
+        "lost_entity_find_and_replace.ignored",
         "auth",
         "auth_provider.homeassistant",
         "core.analytics",
