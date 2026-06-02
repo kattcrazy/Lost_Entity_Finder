@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+from functools import partial
 from pathlib import Path
 
 from homeassistant.core import HomeAssistant
@@ -74,8 +75,7 @@ async def async_scan(
 
         try:
             raw = await hass.async_add_executor_job(
-                path.read_text,
-                encoding="utf-8",
+                partial(path.read_text, encoding="utf-8")
             )
             data = json.loads(raw)
         except (OSError, UnicodeDecodeError, json.JSONDecodeError):
