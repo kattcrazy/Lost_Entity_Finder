@@ -27,7 +27,7 @@ class EntityFinderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             return self.async_create_entry(
-                title="Lost Entity Find And Replace",
+                title="Lost Entity Find & Replace",
                 data={
                     CONF_ENABLE_BULK_FIX: user_input.get(
                         CONF_ENABLE_BULK_FIX, DEFAULT_ENABLE_BULK_FIX

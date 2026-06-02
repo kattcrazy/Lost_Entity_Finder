@@ -29,6 +29,9 @@ STORAGE_SKIP_EXACT: frozenset[str] = frozenset(
     {
         STORAGE_KEY_PENDING,
         STORAGE_KEY_IGNORED,
+        # Legacy storage keys from pre-rename domain
+        "entity_finder.pending_id_changes",
+        "entity_finder.ignored",
         "auth",
         "auth_provider.homeassistant",
         "core.analytics",

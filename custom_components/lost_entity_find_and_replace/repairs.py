@@ -9,6 +9,7 @@ import voluptuous as vol
 from homeassistant import data_entry_flow
 from homeassistant.components.repairs import RepairsFlow
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import issue_registry as ir
 
 from .config_flow import get_enable_bulk_fix
 from .const import DOMAIN
@@ -44,6 +45,7 @@ class StaleReferencesRepairFlow(RepairsFlow):
         self._new_entity_id = str(data.get("new_entity_id", ""))
         self._allow_ignore = bool(int(data.get("allow_ignore", 1)))
         self._preview = ""
+        self._result_summary = ""
         self._hits = []
 
     def _get_manager(self) -> EntityFinderManager | None:
@@ -158,6 +160,11 @@ class StaleReferencesRepairFlow(RepairsFlow):
         self._preview = preview
         self._hits = hits
 
+        if not self._hits:
+            self._result_summary = "No references found to update for this repair."
+            ir.async_delete_issue(self._hass, DOMAIN, self._issue_id)
+            return await self.async_step_result()
+
         if user_input is not None:
             return await self.async_step_apply()
 
@@ -171,19 +178,26 @@ class StaleReferencesRepairFlow(RepairsFlow):
         self, user_input: dict[str, str] | None = None
     ) -> data_entry_flow.FlowResult:
         """Apply Auto-Replace."""
+        if not self._hits:
+            self._result_summary = "No references found to update for this repair."
+            ir.async_delete_issue(self._hass, DOMAIN, self._issue_id)
+            return await self.async_step_result()
+
         result = await async_apply_replace(
             self._hass,
             self._hits,
             self._old_entity_id,
             self._new_entity_id,
         )
+        self._result_summary = result.summary()
         manager = self._get_manager()
         if manager is not None:
             await manager.async_trigger_rescan()
-        return await self.async_step_result(result.summary())
+        ir.async_delete_issue(self._hass, DOMAIN, self._issue_id)
+        return await self.async_step_result()
 
     async def async_step_result(
-        self, summary: str, user_input: dict[str, str] | None = None
+        self, user_input: dict[str, str] | None = None
     ) -> data_entry_flow.FlowResult:
         """Show Auto-Replace result."""
         if user_input is not None:
@@ -191,5 +205,7 @@ class StaleReferencesRepairFlow(RepairsFlow):
         return self.async_show_form(
             step_id="result",
             data_schema=vol.Schema({}),
-            description_placeholders=self._placeholders({"result_summary": summary}),
+            description_placeholders=self._placeholders(
+                {"result_summary": self._result_summary}
+            ),
         )
