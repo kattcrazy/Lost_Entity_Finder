@@ -4,6 +4,9 @@ Detect stale references after entity ID changes in Home Assistant. When you chan
 
 *Lost Entity Finder only handles entity ID changes. It does not handle deleted entities, unavailable entities, or general missing-entity audits. YAML only helpers such as ones in configuration.yaml will not be checked for entity ID changes.*
 
+<img width="402" height="409" alt="image" src="https://github.com/user-attachments/assets/98351145-6ec8-46fd-9057-d2b98d69a7f9" />
+<img width="382" height="409" alt="image" src="https://github.com/user-attachments/assets/eb268543-cb18-464d-80ce-4c96b8d5f6b8" />
+
 ## Installation
 
 ### HACS (recommended)
