@@ -57,11 +57,17 @@ class StaleReferencesRepairFlow(RepairsFlow):
         manager = self._get_manager()
         hits = manager.get_hits_for_old_entity(self._old_entity_id) if manager else []
         references, manual_note = format_references_for_repair(hits)
+        bulk_fix_hint = ""
+        for entry in self._hass.config_entries.async_entries(DOMAIN):
+            if not get_enable_bulk_fix(self._hass, entry):
+                bulk_fix_hint = "_(Auto-Replace is disabled in integration settings.)_\n\n"
+            break
         placeholders = {
             "old_entity_id": self._old_entity_id,
             "new_entity_id": self._new_entity_id,
             "references": references,
             "manual_note": f"{manual_note}\n\n" if manual_note else "",
+            "bulk_fix_hint": bulk_fix_hint,
         }
         if extra:
             placeholders.update(extra)

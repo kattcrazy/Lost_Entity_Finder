@@ -1,6 +1,7 @@
 {
   "domain": "entity_finder",
   "name": "Entity Finder",
+  "after_dependencies": ["automation", "group", "lovelace", "script"],
   "codeowners": ["@kattcrazy"],
   "config_flow": true,
   "dependencies": [],

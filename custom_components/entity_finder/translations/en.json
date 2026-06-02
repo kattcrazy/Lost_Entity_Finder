@@ -26,12 +26,11 @@
   "issues": {
     "stale_entity_references": {
       "title": "Stale references to {old_entity_id}",
-      "description": "This entity ID was changed to `{new_entity_id}`, but the old ID is still referenced in:\n\n{references}\n\n{manual_note}{bulk_fix_hint}\n\nOpen a repair to **Ignore** this entity ID change or **Auto-Replace** references with the new entity ID.",
       "fix_flow": {
         "step": {
           "choose_action": {
             "title": "Fix stale references to {old_entity_id}",
-            "description": "Choose how to handle references to `{old_entity_id}` (changed to `{new_entity_id}`).\n\n{references}\n\n{manual_note}"
+            "description": "Choose how to handle references to `{old_entity_id}` (changed to `{new_entity_id}`).\n\n{references}\n\n{manual_note}{bulk_fix_hint}"
           },
           "auto_replace_disabled": {
             "title": "Auto-Replace disabled",
