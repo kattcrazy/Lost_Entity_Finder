@@ -43,6 +43,18 @@ Lost Entity Find And Replace adds the following entities:
 
 After an entity ID change, open Settings → System → Repairs. Each lost entity ID will have a repair listing all locations that still reference it.
 
+### Service
+
+Use the `lost_entity_find_and_replace.find_entity_references` service to scan for a specific entity ID on demand.
+
+Example
+
+```yaml
+service: lost_entity_find_and_replace.find_entity_references
+data:
+  entity_id: light.name
+```
+
 ## License
 
 This project uses the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html). See [LICENSE](LICENSE) for the full legal text. In short: you can use, change, and share it freely. If you distribute a modified version, you must offer it under the same license and share the source too, so the work (and its derivatives) stay open. You cannot take this code, tweak it, and ship it as a closed product.
