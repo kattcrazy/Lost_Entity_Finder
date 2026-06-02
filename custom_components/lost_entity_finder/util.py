@@ -158,6 +158,11 @@ def dedupe_reference_hits(
     return unique
 
 
+def has_auto_replaceable_hits(hits: list[ReferenceHit]) -> bool:
+    """Return True when at least one reference can be auto-replaced."""
+    return any(hit.auto_replaceable for hit in dedupe_reference_hits(hits).values())
+
+
 def manual_reference_reason(hit: ReferenceHit) -> str:
     """Return a short reason why a reference must be updated manually."""
     if hit.resource_type == "storage":
@@ -180,9 +185,7 @@ def format_references_for_repair(
         line = f"- [{hit.label}]({hit.edit_url})"
         if not hit.auto_replaceable:
             manual_count += 1
-            line += (
-                f" _(manual update required - {manual_reference_reason(hit)})_"
-            )
+            line += " _(manual update required)_"
         lines.append(line)
 
     manual_note = ""

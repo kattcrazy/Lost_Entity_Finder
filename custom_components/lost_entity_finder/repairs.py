@@ -14,9 +14,10 @@ from homeassistant.helpers import issue_registry as ir
 from .config_flow import get_enable_bulk_fix
 from .const import DOMAIN
 from .manager import EntityFinderManager
+from .models import ReferenceHit
 from .replacer import async_apply_replace, async_preview_replace
 from .scanner import async_scan_tracked_references
-from .util import format_references_for_repair
+from .util import format_references_for_repair, has_auto_replaceable_hits
 
 
 async def async_create_fix_flow(
@@ -56,16 +57,41 @@ class StaleReferencesRepairFlow(RepairsFlow):
                 return manager
         return None
 
-    def _placeholders(self, extra: dict[str, str] | None = None) -> dict[str, str]:
-        """Build translation placeholders."""
+    def _bulk_fix_enabled(self) -> bool:
+        """Return whether Auto-Replace is enabled in integration settings."""
+        for entry in self._hass.config_entries.async_entries(DOMAIN):
+            return get_enable_bulk_fix(self._hass, entry)
+        return False
+
+    def _can_offer_auto_replace(self, hits: list[ReferenceHit]) -> bool:
+        """Return True when Auto-Replace can change at least one reference."""
+        return self._bulk_fix_enabled() and has_auto_replaceable_hits(hits)
+
+    async def _async_get_hits(self) -> list[ReferenceHit]:
+        """Return current reference hits for this repair."""
         manager = self._get_manager()
         hits = manager.get_hits_for_old_entity(self._old_entity_id) if manager else []
+        if not hits:
+            hits = (
+                await async_scan_tracked_references(self._hass, {self._old_entity_id})
+            ).get(self._old_entity_id, [])
+        return hits
+
+    def _placeholders(
+        self,
+        hits: list[ReferenceHit] | None = None,
+        extra: dict[str, str] | None = None,
+    ) -> dict[str, str]:
+        """Build translation placeholders."""
+        if hits is None:
+            manager = self._get_manager()
+            hits = (
+                manager.get_hits_for_old_entity(self._old_entity_id) if manager else []
+            )
         references, manual_note = format_references_for_repair(hits)
         bulk_fix_hint = ""
-        for entry in self._hass.config_entries.async_entries(DOMAIN):
-            if not get_enable_bulk_fix(self._hass, entry):
-                bulk_fix_hint = "_(Auto-Replace is disabled in integration settings.)_\n\n"
-            break
+        if has_auto_replaceable_hits(hits) and not self._bulk_fix_enabled():
+            bulk_fix_hint = "_(Auto-Replace is disabled in integration settings.)_\n\n"
         placeholders = {
             "old_entity_id": self._old_entity_id,
             "new_entity_id": self._new_entity_id,
@@ -82,45 +108,53 @@ class StaleReferencesRepairFlow(RepairsFlow):
     ) -> data_entry_flow.FlowResult:
         """Choose Ignore/Auto-Replace, or force Auto-Replace only."""
         if not self._allow_ignore:
-            entry = next(
-                (item for item in self._hass.config_entries.async_entries(DOMAIN)),
-                None,
-            )
-            if entry is None or not get_enable_bulk_fix(self._hass, entry):
+            self._hits = await self._async_get_hits()
+            if self._can_offer_auto_replace(self._hits):
+                return await self.async_step_preview()
+            if has_auto_replaceable_hits(self._hits) and not self._bulk_fix_enabled():
                 return await self.async_step_auto_replace_disabled()
-            return await self.async_step_preview()
+            return await self.async_step_manual_only()
         return await self.async_step_choose_action(user_input)
 
     async def async_step_choose_action(
         self, user_input: dict[str, str] | None = None
     ) -> data_entry_flow.FlowResult:
         """Present repair actions."""
+        self._hits = await self._async_get_hits()
+
         if user_input is not None:
             action = user_input.get("action")
             if action == "ignore":
                 return await self.async_step_ignore()
             if action == "auto_replace":
-                entry = next(
-                    (
-                        item
-                        for item in self._hass.config_entries.async_entries(DOMAIN)
-                    ),
-                    None,
-                )
-                if entry is None or not get_enable_bulk_fix(self._hass, entry):
-                    return await self.async_step_auto_replace_disabled()
+                if not self._can_offer_auto_replace(self._hits):
+                    return await self.async_step_manual_only()
                 return await self.async_step_preview()
+
+        actions: dict[str, str] = {"ignore": "Ignore"}
+        if self._can_offer_auto_replace(self._hits):
+            actions["auto_replace"] = "Auto-Replace"
 
         return self.async_show_form(
             step_id="choose_action",
-            data_schema=vol.Schema(
-                {
-                    vol.Required("action"): vol.In(
-                        {"ignore": "Ignore", "auto_replace": "Auto-Replace"}
-                    )
-                }
-            ),
-            description_placeholders=self._placeholders(),
+            data_schema=vol.Schema({vol.Required("action"): vol.In(actions)}),
+            description_placeholders=self._placeholders(self._hits),
+        )
+
+    async def async_step_manual_only(
+        self, user_input: dict[str, str] | None = None
+    ) -> data_entry_flow.FlowResult:
+        """Show manual-only guidance when nothing can be auto-replaced."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data={})
+
+        if not self._hits:
+            self._hits = await self._async_get_hits()
+
+        return self.async_show_form(
+            step_id="manual_only",
+            data_schema=vol.Schema({}),
+            description_placeholders=self._placeholders(self._hits),
         )
 
     async def async_step_ignore(
@@ -141,24 +175,25 @@ class StaleReferencesRepairFlow(RepairsFlow):
         return self.async_show_form(
             step_id="auto_replace_disabled",
             data_schema=vol.Schema({}),
-            description_placeholders=self._placeholders(),
+            description_placeholders=self._placeholders(
+                await self._async_get_hits()
+            ),
         )
 
     async def async_step_preview(
         self, user_input: dict[str, str] | None = None
     ) -> data_entry_flow.FlowResult:
         """Preview Auto-Replace changes."""
-        manager = self._get_manager()
-        hits = manager.get_hits_for_old_entity(self._old_entity_id) if manager else []
-        if not hits:
-            hits = (
-                await async_scan_tracked_references(self._hass, {self._old_entity_id})
-            ).get(self._old_entity_id, [])
+        if not self._hits:
+            self._hits = await self._async_get_hits()
+
+        if not self._can_offer_auto_replace(self._hits):
+            return await self.async_step_manual_only()
+
         preview, _unique = await async_preview_replace(
-            self._hass, hits, self._old_entity_id, self._new_entity_id
+            self._hass, self._hits, self._old_entity_id, self._new_entity_id
         )
         self._preview = preview
-        self._hits = hits
 
         if not self._hits:
             self._result_summary = "No references found to update for this repair."
@@ -171,7 +206,9 @@ class StaleReferencesRepairFlow(RepairsFlow):
         return self.async_show_form(
             step_id="preview",
             data_schema=vol.Schema({}),
-            description_placeholders=self._placeholders({"preview": preview}),
+            description_placeholders=self._placeholders(
+                self._hits, {"preview": preview}
+            ),
         )
 
     async def async_step_apply(
