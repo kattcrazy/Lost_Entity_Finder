@@ -45,7 +45,7 @@ After an entity ID change, open Settings → System → Repairs. Each lost entit
 
 ### Services
 
-Use the `lost_entity_find_and_replace.find_entity_references` service to scan for a specific entity ID on demand.
+Use  `lost_entity_find_and_replace.find_entity_references` to scan for a specific entity ID on demand. Will create a persistent notification with links to all instances of the entity id.
 
 Example
 
