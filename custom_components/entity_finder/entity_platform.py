@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
-from .button import AutoReplaceAllButton, IgnoreAllButton, RestoreIgnoredButton
 from .config_flow import get_enable_bulk_fix
 from .manager import EntityFinderManager
-from .sensor import LostEntitiesSensor
+
+if TYPE_CHECKING:
+    from .button import AutoReplaceAllButton
 
 
 class EntityFinderEntityPlatform:
@@ -29,10 +32,14 @@ class EntityFinderEntityPlatform:
 
     def async_setup_sensor(self, async_add_entities) -> None:
         """Set up the Lost Entities sensor."""
+        from .sensor import LostEntitiesSensor
+
         async_add_entities([LostEntitiesSensor(self.manager, self.entry)])
 
     def async_setup_buttons(self, async_add_entities) -> None:
         """Set up Entity Finder buttons."""
+        from .button import IgnoreAllButton, RestoreIgnoredButton
+
         self._async_add_button_entities = async_add_entities
         async_add_entities(
             [
@@ -45,6 +52,8 @@ class EntityFinderEntityPlatform:
 
     def _async_add_auto_replace(self) -> None:
         """Add the Auto-Replace All button if missing."""
+        from .button import AutoReplaceAllButton
+
         if (
             self._auto_replace_button is not None
             or self._async_add_button_entities is None

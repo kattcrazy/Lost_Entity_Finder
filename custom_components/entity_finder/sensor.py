@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
@@ -9,8 +11,10 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import ENTITY_LOST_ENTITIES
-from .entity_platform import EntityFinderEntityPlatform
 from .manager import EntityFinderManager
+
+if TYPE_CHECKING:
+    from .entity_platform import EntityFinderEntityPlatform
 
 
 async def async_setup_entry(

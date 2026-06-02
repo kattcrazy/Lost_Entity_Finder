@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from homeassistant.components.button import ButtonEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -13,8 +15,10 @@ from .const import (
     ENTITY_IGNORE_ALL,
     ENTITY_RESTORE_IGNORED,
 )
-from .entity_platform import EntityFinderEntityPlatform
 from .manager import EntityFinderManager
+
+if TYPE_CHECKING:
+    from .entity_platform import EntityFinderEntityPlatform
 
 
 async def async_setup_entry(
