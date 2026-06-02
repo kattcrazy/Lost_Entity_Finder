@@ -20,13 +20,15 @@ Detect stale references after entity ID changes in Home Assistant. When you chan
 2. Restart Home Assistant
 3. Add the integration under Settings → Devices & services
 
-## Auto-Replace
+## Configuration & Features
+
+### Auto-Replace
 
 On setup you can enable Auto-Replace (bulk fix). Default is off. Change this anytime via Settings → Devices & services → Lost Entity Find And Replace → Configure.
 
 Some types of helpers, YAML-only config, and third-party `.storage` files such as HACS intergrations may require manual updating. These are flagged in the repair and cannot be auto-replaced.
 
-## Entities
+### Entities
 
 Lost Entity Find And Replace adds the following entities:
 
@@ -37,7 +39,7 @@ Lost Entity Find And Replace adds the following entities:
 | Restore Ignored | Button | Clear all ignored lost-entity repairs and rescan |
 | Auto-Replace All | Button | Replace all stale references (entity only created if Auto-Replace is enabled) |
 
-## Repairs
+### Repairs
 
 After an entity ID change, open Settings → System → Repairs. Each lost entity ID will have a repair listing all locations that still reference it.
 
