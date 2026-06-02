@@ -9,3 +9,22 @@ find_entity_references:
       example: sensor.kitchen_temp
       selector:
         text:
+
+create_manual_repair:
+  name: Create Manual Repair
+  description: Create a repair for a provided old/new entity ID pair.
+  fields:
+    old_entity_id:
+      name: Old Entity ID
+      description: The stale entity ID currently referenced in configs.
+      required: true
+      example: sensor.old_name
+      selector:
+        text:
+    new_entity_id:
+      name: New Entity ID
+      description: The replacement entity ID that should be written.
+      required: true
+      example: sensor.new_name
+      selector:
+        text:

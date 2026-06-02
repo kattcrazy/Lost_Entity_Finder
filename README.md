@@ -43,7 +43,7 @@ Lost Entity Find And Replace adds the following entities:
 
 After an entity ID change, open Settings → System → Repairs. Each lost entity ID will have a repair listing all locations that still reference it.
 
-### Service
+### Services
 
 Use the `lost_entity_find_and_replace.find_entity_references` service to scan for a specific entity ID on demand.
 
@@ -53,6 +53,15 @@ Example
 service: lost_entity_find_and_replace.find_entity_references
 data:
   entity_id: light.name
+```
+
+Use `lost_entity_find_and_replace.create_manual_repair` to create a repair from a supplied old/new entity ID pair. You can then choose to auto-replace all instances from the repair.
+
+```yaml
+service: lost_entity_find_and_replace.create_manual_repair
+data:
+  old_entity_id: light.old_name
+  new_entity_id: light.new_name
 ```
 
 ## License

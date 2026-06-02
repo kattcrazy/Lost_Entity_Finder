@@ -14,6 +14,7 @@ from .config_flow import get_enable_bulk_fix
 from .const import DOMAIN
 from .manager import EntityFinderManager
 from .replacer import async_apply_replace, async_preview_replace
+from .scanner import async_scan_tracked_references
 from .util import format_references_for_repair
 
 
@@ -41,6 +42,7 @@ class StaleReferencesRepairFlow(RepairsFlow):
         self._data = data
         self._old_entity_id = str(data.get("old_entity_id", ""))
         self._new_entity_id = str(data.get("new_entity_id", ""))
+        self._allow_ignore = bool(int(data.get("allow_ignore", 1)))
         self._preview = ""
         self._hits = []
 
@@ -76,7 +78,15 @@ class StaleReferencesRepairFlow(RepairsFlow):
     async def async_step_init(
         self, user_input: dict[str, str] | None = None
     ) -> data_entry_flow.FlowResult:
-        """Choose Ignore or Auto-Replace."""
+        """Choose Ignore/Auto-Replace, or force Auto-Replace only."""
+        if not self._allow_ignore:
+            entry = next(
+                (item for item in self._hass.config_entries.async_entries(DOMAIN)),
+                None,
+            )
+            if entry is None or not get_enable_bulk_fix(self._hass, entry):
+                return await self.async_step_auto_replace_disabled()
+            return await self.async_step_preview()
         return await self.async_step_choose_action(user_input)
 
     async def async_step_choose_action(
@@ -137,10 +147,11 @@ class StaleReferencesRepairFlow(RepairsFlow):
     ) -> data_entry_flow.FlowResult:
         """Preview Auto-Replace changes."""
         manager = self._get_manager()
-        if manager is None:
-            return self.async_abort(reason="not_loaded")
-
-        hits = manager.get_hits_for_old_entity(self._old_entity_id)
+        hits = manager.get_hits_for_old_entity(self._old_entity_id) if manager else []
+        if not hits:
+            hits = (
+                await async_scan_tracked_references(self._hass, {self._old_entity_id})
+            ).get(self._old_entity_id, [])
         preview, _unique = await async_preview_replace(
             self._hass, hits, self._old_entity_id, self._new_entity_id
         )
