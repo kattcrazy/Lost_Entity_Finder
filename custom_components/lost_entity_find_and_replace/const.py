@@ -18,6 +18,7 @@ TRANSLATION_KEY_STALE = "stale_entity_references"
 DATA_MANAGER = "manager"
 
 ENTITY_LOST_ENTITIES = "lost_entities"
+ENTITY_IGNORED_LOST_ENTITIES = "ignored_lost_entities"
 ENTITY_AUTO_REPLACE_ALL = "auto_replace_all"
 ENTITY_IGNORE_ALL = "ignore_all"
 ENTITY_RESTORE_IGNORED = "restore_ignored"

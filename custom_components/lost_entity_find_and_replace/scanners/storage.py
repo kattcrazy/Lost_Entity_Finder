@@ -22,6 +22,10 @@ _LOGGER = logging.getLogger(__name__)
 
 def should_skip_storage_file(filename: str) -> bool:
     """Return True when a .storage file should not be scanned."""
+    # Home Assistant and integrations can leave short-lived temp files in .storage.
+    # These are not user-editable config targets and create noisy false positives.
+    if filename.lower().startswith("tmp"):
+        return True
     if filename in STORAGE_SKIP_EXACT:
         return True
     return filename.startswith(STORAGE_SKIP_PREFIXES)

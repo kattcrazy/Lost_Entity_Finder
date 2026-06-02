@@ -220,6 +220,11 @@ class EntityFinderManager:
         return len(self.get_lost_entity_ids())
 
     @callback
+    def get_ignored_lost_count(self) -> int:
+        """Return the number of ignored lost entity IDs."""
+        return len(self.get_ignored_lost_entity_ids())
+
+    @callback
     def get_lost_entity_ids(self) -> list[str]:
         """Return old entity IDs with unresolved stale references."""
         lost: set[str] = set()
@@ -232,6 +237,20 @@ class EntityFinderManager:
             if not self.store.is_ignored(old_id):
                 lost.add(old_id)
         return sorted(lost)
+
+    @callback
+    def get_ignored_lost_entity_ids(self) -> list[str]:
+        """Return ignored old entity IDs with unresolved stale references."""
+        ignored: set[str] = set()
+        for old_id in self.store.get_pending_changes().keys():
+            if not self.store.is_ignored(old_id):
+                continue
+            if self._current_hits.get(old_id):
+                ignored.add(old_id)
+        for old_id in self._awaiting_scan:
+            if self.store.is_ignored(old_id):
+                ignored.add(old_id)
+        return sorted(ignored)
 
     @staticmethod
     def _format_references(references: list[ReferenceHit]) -> str:
