@@ -13,7 +13,7 @@ MAX_PENDING_CHANGES = 50
 MAX_IGNORED = 50
 DEBOUNCE_COOLDOWN = 3
 
-TRANSLATION_KEY_STALE = "stale_entity_references"
+TRANSLATION_KEY_LOST = "lost_entity_references"
 
 DATA_MANAGER = "manager"
 

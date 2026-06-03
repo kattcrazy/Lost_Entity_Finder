@@ -17,7 +17,7 @@ from homeassistant.helpers.debounce import Debouncer
 from homeassistant.helpers.event import async_call_later
 
 from .config_flow import get_enable_bulk_fix
-from .const import DEBOUNCE_COOLDOWN, DOMAIN, TRANSLATION_KEY_STALE
+from .const import DEBOUNCE_COOLDOWN, DOMAIN, TRANSLATION_KEY_LOST
 from .models import ReferenceHit
 from .scanner import async_scan_tracked_references
 from .store import EntityFinderStore
@@ -178,7 +178,7 @@ class EntityFinderManager:
                 is_fixable=True,
                 is_persistent=False,
                 severity=ir.IssueSeverity.WARNING,
-                translation_key=TRANSLATION_KEY_STALE,
+                translation_key=TRANSLATION_KEY_LOST,
                 data={
                     "old_entity_id": old_entity_id,
                     "new_entity_id": pending.new_entity_id,
@@ -226,7 +226,7 @@ class EntityFinderManager:
 
     @callback
     def get_lost_entity_ids(self) -> list[str]:
-        """Return old entity IDs with unresolved stale references."""
+        """Return old entity IDs with unresolved lost entity references."""
         lost: set[str] = set()
         for old_id in self.store.get_pending_changes().keys():
             if self.store.is_ignored(old_id):
@@ -240,7 +240,7 @@ class EntityFinderManager:
 
     @callback
     def get_ignored_lost_entity_ids(self) -> list[str]:
-        """Return ignored old entity IDs with unresolved stale references."""
+        """Return ignored old entity IDs with unresolved lost entity references."""
         ignored: set[str] = set()
         for old_id in self.store.get_pending_changes().keys():
             if not self.store.is_ignored(old_id):
@@ -263,7 +263,7 @@ class EntityFinderManager:
         return list(self._current_hits.get(old_entity_id, []))
 
     async def async_ignore(self, old_entity_id: str) -> None:
-        """Ignore a stale entity ID change repair."""
+        """Ignore a lost entity ID change repair."""
         await self.store.async_ignore(old_entity_id)
         issue_id = slugify_issue_id(old_entity_id)
         ir.async_ignore_issue(self.hass, DOMAIN, issue_id, True)
@@ -284,7 +284,7 @@ class EntityFinderManager:
         await self.async_trigger_rescan()
 
     async def async_auto_replace_all(self) -> None:
-        """Replace all stale references when bulk fix is enabled."""
+        """Replace all lost entity references when bulk fix is enabled."""
         if not get_enable_bulk_fix(self.hass, self.entry):
             return
 

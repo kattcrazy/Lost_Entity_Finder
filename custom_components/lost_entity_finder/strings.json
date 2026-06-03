@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Lost Entity Finder",
-        "description": "Detect stale references after entity ID changes and raise repairs with direct links to each location.",
+        "description": "Detect lost entity references after entity ID changes and raise repairs with direct links to each location.",
         "data": {
           "enable_bulk_fix": "Enable Auto-Replace (bulk fix)"
         }
@@ -24,12 +24,12 @@
     }
   },
   "issues": {
-    "stale_entity_references": {
-      "title": "Stale references to {old_entity_id}",
+    "lost_entity_references": {
+      "title": "Lost entity references to {old_entity_id}",
       "fix_flow": {
         "step": {
           "choose_action": {
-            "title": "Fix stale references to {old_entity_id}",
+            "title": "Fix lost entity references to {old_entity_id}",
             "description": "Choose how to handle references to `{old_entity_id}` (changed to `{new_entity_id}`).\n\n{references}\n\n{manual_note}{bulk_fix_hint}"
           },
           "auto_replace_disabled": {

@@ -82,7 +82,7 @@ class RestoreIgnoredButton(EntityFinderButton):
 
 
 class AutoReplaceAllButton(EntityFinderButton):
-    """Button to auto-replace all stale references."""
+    """Button to auto-replace all lost entity references."""
 
     _attr_name = "Auto-Replace All"
     _attr_icon = "mdi:swap-horizontal"
@@ -93,5 +93,5 @@ class AutoReplaceAllButton(EntityFinderButton):
         self._attr_unique_id = f"{entry.entry_id}_{ENTITY_AUTO_REPLACE_ALL}"
 
     async def async_press(self) -> None:
-        """Replace all stale references when bulk fix is enabled."""
+        """Replace all lost entity references when bulk fix is enabled."""
         await self._manager.async_auto_replace_all()

@@ -25,7 +25,7 @@ class EntityFinderUtilTests(unittest.TestCase):
 
     def test_slugify_issue_id(self) -> None:
         """Issue IDs should be stable and safe."""
-        self.assertEqual(slugify_issue_id("sensor.door"), "stale_sensor_door")
+        self.assertEqual(slugify_issue_id("sensor.door"), "lost_sensor_door")
 
     def test_merge_reference_hits_deduplicates(self) -> None:
         """Merged hits should deduplicate by resource."""

@@ -14,7 +14,7 @@ from homeassistant.helpers import issue_registry as ir
 
 from . import repairs  # noqa: F401
 from .config_flow import get_enable_bulk_fix
-from .const import DOMAIN, TRANSLATION_KEY_STALE
+from .const import DOMAIN, TRANSLATION_KEY_LOST
 from .entity_platform import EntityFinderEntityPlatform
 from .manager import EntityFinderManager
 from .scanner import async_scan_tracked_references
@@ -153,7 +153,7 @@ async def _async_handle_create_manual_repair_service(
         is_fixable=True,
         is_persistent=False,
         severity=ir.IssueSeverity.WARNING,
-        translation_key=TRANSLATION_KEY_STALE,
+        translation_key=TRANSLATION_KEY_LOST,
         data={
             "old_entity_id": old_entity_id,
             "new_entity_id": new_entity_id,

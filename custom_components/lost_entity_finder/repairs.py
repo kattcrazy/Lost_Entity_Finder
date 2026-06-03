@@ -26,11 +26,11 @@ async def async_create_fix_flow(
     data: dict[str, str | int | float | None] | None,
 ) -> RepairsFlow:
     """Create a repair flow."""
-    return StaleReferencesRepairFlow(hass, issue_id, data or {})
+    return LostEntityReferencesRepairFlow(hass, issue_id, data or {})
 
 
-class StaleReferencesRepairFlow(RepairsFlow):
-    """Repair flow for stale entity references after an entity ID change."""
+class LostEntityReferencesRepairFlow(RepairsFlow):
+    """Repair flow for lost entity references after an entity ID change."""
 
     def __init__(
         self,
@@ -160,7 +160,7 @@ class StaleReferencesRepairFlow(RepairsFlow):
     async def async_step_ignore(
         self, user_input: dict[str, str] | None = None
     ) -> data_entry_flow.FlowResult:
-        """Ignore this stale entity ID change."""
+        """Ignore this lost entity ID change."""
         manager = self._get_manager()
         if manager is not None:
             await manager.async_ignore(self._old_entity_id)

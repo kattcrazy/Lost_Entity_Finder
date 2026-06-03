@@ -26,7 +26,7 @@ TEMPLATE_MARKERS = ("{{", "{%", "{%")
 
 def slugify_issue_id(old_entity_id: str) -> str:
     """Build a stable issue ID from an old entity ID."""
-    return "stale_" + old_entity_id.replace(".", "_").replace("-", "_")
+    return "lost_" + old_entity_id.replace(".", "_").replace("-", "_")
 
 
 def is_template_string(value: str) -> bool:
