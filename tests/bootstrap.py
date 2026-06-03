@@ -74,8 +74,18 @@ ha_const = _ensure_module("homeassistant.const")
 ha_const.EVENT_COMPONENT_LOADED = "component_loaded"
 ha_const.EVENT_HOMEASSISTANT_STARTED = "homeassistant_started"
 
+ha_exceptions = _ensure_module("homeassistant.exceptions")
+
+
+class _HomeAssistantError(Exception):
+    """Minimal stand-in for Home Assistant config errors in unit tests."""
+
+
+ha_exceptions.HomeAssistantError = _HomeAssistantError
+
 ha.config_entries = ha_config_entries
 ha.core = ha_core
+ha.exceptions = ha_exceptions
 ha.helpers = ha_helpers
 ha.components = ha_components
 ha.const = ha_const

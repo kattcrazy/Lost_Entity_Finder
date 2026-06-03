@@ -169,6 +169,8 @@ def manual_reference_reason(hit: ReferenceHit) -> str:
         return "third-party storage"
     if hit.resource_type == "helper":
         return "helper"
+    if hit.resource_type == "yaml_config":
+        return "YAML config"
     if hit.resource_type in {"automation", "script", "scene"}:
         return "YAML config"
     return "manual edit"

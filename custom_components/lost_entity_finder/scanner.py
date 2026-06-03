@@ -5,7 +5,16 @@ from __future__ import annotations
 from homeassistant.core import HomeAssistant
 
 from .models import ReferenceHit
-from .scanners import automation, group, helper, lovelace, scene, script, storage
+from .scanners import (
+    automation,
+    group,
+    helper,
+    lovelace,
+    scene,
+    script,
+    storage,
+    yaml_config,
+)
 from .util import merge_reference_hits
 
 SCANNERS = (
@@ -15,6 +24,7 @@ SCANNERS = (
     lovelace.async_scan,
     group.async_scan,
     helper.async_scan,
+    yaml_config.async_scan,
     storage.async_scan,
 )
 
