@@ -6,6 +6,7 @@ Detect lost entity references after entity ID changes in Home Assistant. When yo
 
 <img width="402"  alt="image" src="https://github.com/user-attachments/assets/98351145-6ec8-46fd-9057-d2b98d69a7f9" />
 <img width="382" alt="image" src="https://github.com/user-attachments/assets/eb268543-cb18-464d-80ce-4c96b8d5f6b8" />
+
 ## Installation
 
 ### HACS (recommended)
