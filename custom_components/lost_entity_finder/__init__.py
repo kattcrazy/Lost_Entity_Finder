@@ -157,7 +157,6 @@ async def _async_handle_create_manual_repair_service(
         data={
             "old_entity_id": old_entity_id,
             "new_entity_id": new_entity_id,
-            "allow_ignore": 0,
         },
         translation_placeholders={
             "old_entity_id": old_entity_id,

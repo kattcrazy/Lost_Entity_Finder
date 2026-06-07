@@ -59,7 +59,7 @@ data:
   entity_id: light.name
 ```
 
-Use `lost_entity_finder.create_manual_repair` to create a repair from a supplied old/new entity ID pair. You can then choose to auto-replace all instances from the repair.
+Use `lost_entity_finder.create_manual_repair` to create a repair from a supplied old/new entity ID pair. You can then choose to ignore, or auto-replace all instances from the repair.
 
 ```yaml
 service: lost_entity_finder.create_manual_repair

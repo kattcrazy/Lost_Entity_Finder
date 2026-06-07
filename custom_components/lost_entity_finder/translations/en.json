@@ -30,7 +30,10 @@
         "step": {
           "choose_action": {
             "title": "Fix lost entity references to {old_entity_id}",
-            "description": "Choose how to handle references to `{old_entity_id}` (changed to `{new_entity_id}`).\n\n{references}\n\n{manual_note}{bulk_fix_hint}"
+            "description": "Choose how to handle references to `{old_entity_id}` (changed to `{new_entity_id}`).\n\n{references}\n\n{manual_note}{bulk_fix_hint}",
+            "data": {
+              "action": "Action"
+            }
           },
           "auto_replace_disabled": {
             "title": "Auto-Replace disabled",

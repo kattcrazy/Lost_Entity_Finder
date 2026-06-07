@@ -262,12 +262,14 @@ class EntityFinderManager:
         """Return latest scan hits for an old entity ID."""
         return list(self._current_hits.get(old_entity_id, []))
 
-    async def async_ignore(self, old_entity_id: str) -> None:
+    async def async_ignore(
+        self, old_entity_id: str, issue_id: str | None = None
+    ) -> None:
         """Ignore a lost entity ID change repair."""
         await self.store.async_ignore(old_entity_id)
-        issue_id = slugify_issue_id(old_entity_id)
-        ir.async_ignore_issue(self.hass, DOMAIN, issue_id, True)
-        ir.async_delete_issue(self.hass, DOMAIN, issue_id)
+        resolved_issue_id = issue_id or slugify_issue_id(old_entity_id)
+        ir.async_ignore_issue(self.hass, DOMAIN, resolved_issue_id, True)
+        ir.async_delete_issue(self.hass, DOMAIN, resolved_issue_id)
         self._async_notify_listeners()
 
     async def async_ignore_all(self) -> None:

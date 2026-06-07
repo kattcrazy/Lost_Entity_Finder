@@ -44,7 +44,6 @@ class LostEntityReferencesRepairFlow(RepairsFlow):
         self._data = data
         self._old_entity_id = str(data.get("old_entity_id", ""))
         self._new_entity_id = str(data.get("new_entity_id", ""))
-        self._allow_ignore = bool(int(data.get("allow_ignore", 1)))
         self._preview = ""
         self._result_summary = ""
         self._hits = []
@@ -106,14 +105,7 @@ class LostEntityReferencesRepairFlow(RepairsFlow):
     async def async_step_init(
         self, user_input: dict[str, str] | None = None
     ) -> data_entry_flow.FlowResult:
-        """Choose Ignore/Auto-Replace, or force Auto-Replace only."""
-        if not self._allow_ignore:
-            self._hits = await self._async_get_hits()
-            if self._can_offer_auto_replace(self._hits):
-                return await self.async_step_preview()
-            if has_auto_replaceable_hits(self._hits) and not self._bulk_fix_enabled():
-                return await self.async_step_auto_replace_disabled()
-            return await self.async_step_manual_only()
+        """Choose Ignore or Auto-Replace."""
         return await self.async_step_choose_action(user_input)
 
     async def async_step_choose_action(
@@ -126,6 +118,8 @@ class LostEntityReferencesRepairFlow(RepairsFlow):
             action = user_input.get("action")
             if action == "ignore":
                 return await self.async_step_ignore()
+            if action == "manual":
+                return await self.async_step_manual_only()
             if action == "auto_replace":
                 if not self._can_offer_auto_replace(self._hits):
                     return await self.async_step_manual_only()
@@ -134,6 +128,8 @@ class LostEntityReferencesRepairFlow(RepairsFlow):
         actions: dict[str, str] = {"ignore": "Ignore"}
         if self._can_offer_auto_replace(self._hits):
             actions["auto_replace"] = "Auto-Replace"
+        else:
+            actions["manual"] = "Close (update manually)"
 
         return self.async_show_form(
             step_id="choose_action",
@@ -163,7 +159,9 @@ class LostEntityReferencesRepairFlow(RepairsFlow):
         """Ignore this lost entity ID change."""
         manager = self._get_manager()
         if manager is not None:
-            await manager.async_ignore(self._old_entity_id)
+            await manager.async_ignore(self._old_entity_id, issue_id=self._issue_id)
+        else:
+            ir.async_delete_issue(self._hass, DOMAIN, self._issue_id)
         return self.async_create_entry(title="", data={})
 
     async def async_step_auto_replace_disabled(
@@ -243,6 +241,6 @@ class LostEntityReferencesRepairFlow(RepairsFlow):
             step_id="result",
             data_schema=vol.Schema({}),
             description_placeholders=self._placeholders(
-                {"result_summary": self._result_summary}
+                self._hits, {"result_summary": self._result_summary}
             ),
         )
